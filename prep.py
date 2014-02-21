@@ -14,8 +14,8 @@ parser.add_argument("-t", "--template", help="Template file name",
 parser.add_argument("-s", "--spec", help="Specification file in JSON format",
                     nargs='+')
 parser.add_argument("-p", "--python", help="Intermediate python file")
-parser.add_argument("-o", "--output", help="Output file name")#,
-#                    type=argparse.FileType('w'), default=sys.stdout)
+parser.add_argument("-o", "--output", help="Output file name",
+                    type=argparse.FileType('wb'), default=sys.stdout)
 args = parser.parse_args()
 
 def process_inputs():
@@ -26,8 +26,7 @@ def process_inputs():
     sys.stdout = buffer          # change stdout to capture exec output
     exec(parse_template())
     sys.stdout = sys.__stdout__  # restore default stdout
-    with open(args.output, "w") as f:
-        f.write(buffer.getvalue())
+    args.output.write(buffer.getvalue())
     buffer.close()
 
 def process_specs():

@@ -5,6 +5,6 @@ python:
   - "3.2"
   - "3.3"
 script:
-  - "prep.py -s test/sum/spec.json -t test/sum/sum.txt -o out"
+  - "./prep.py -s test/sum/spec.json -t test/sum/sum.txt -o out"
   - "cat out"
 
