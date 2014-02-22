@@ -39,14 +39,14 @@ def parse_template():
     res = ""
     pat = re.compile(r'^//;|^#%')
     begin_here_doc = 'print("""'
-    end_here_doc = '""", end="")\n'
+    end_here_doc = '""" % locals(), end="")\n'
     state = 0 # 0 = python; 1 = template txt
     file_t = open(args.template, "r")
     for line in file_t:
         if (pat.match(line)):
             line = pat.sub('', line) # string replace
             if state == 1:
-                line =  end_here_doc + line # end here doc
+                line = end_here_doc + line # end here doc
             state = 0
         else:
             if state == 0:

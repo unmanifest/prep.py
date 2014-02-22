@@ -1,0 +1,9 @@
+//;sum = 0
+//;for i in spec:
+//;    sum += i
+//;    print(i)
+----------
+Total: %(sum)d
+----------
+
+//;print("Sum is %d" % (sum))
