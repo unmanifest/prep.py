@@ -22,9 +22,13 @@ def process_inputs():
     spec = ""
     if args.spec:
         spec = process_specs()
+    code = parse_template()
+    if (args.python):
+        with open(args.python, "wb") as file:
+            file.write(code)
     buffer = StringIO()
     sys.stdout = buffer          # change stdout to capture exec output
-    exec(parse_template())
+    exec(code)
     sys.stdout = sys.__stdout__  # restore default stdout
     args.output.write(buffer.getvalue())
     buffer.close()
@@ -37,7 +41,10 @@ def process_specs():
 
 def parse_template():
     res = ""
+    indent = "    "
+    level = 0
     pat = re.compile(r'^//;|^#%')
+    i_pat = re.compile(r'^ *#{3} *level(?P<suffix>[-+]{2}) *$');
     begin_here_doc = 'print("""'
     end_here_doc = '""" % locals(), end="")\n'
     state = 0 # 0 = python; 1 = template txt
@@ -45,12 +52,18 @@ def parse_template():
     for line in file_t:
         if (pat.match(line)):
             line = pat.sub('', line) # string replace
+            m = i_pat.match(line)
+            if m is not None:
+                if m.group('suffix') == '++':
+                    level += 1
+                else:
+                    level -= 1
             if state == 1:
                 line = end_here_doc + line # end here doc
             state = 0
         else:
             if state == 0:
-                line = begin_here_doc + line
+                line = level * indent + begin_here_doc + line
                 state = 1
         res += line
     if state == 1: # one final time

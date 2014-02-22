@@ -1,7 +1,19 @@
+//;# - Use a pound '#' sign to embed comments in this file.
+//;# - Use 'level' directives to indent print calls for "here
+//;#   documents" to match the corresponding loop indentation level.
+//;# - Use level++ to increase and level-- to decrease indents.
+//;# - Level directives must be on a line by themselves with 3
+//;#   contiguous '#' characters as the first non-whitespace
+//;#   characters followed by the actual directive. Leading/trailing
+//;#   whitespace (or lack thereof) is ignored.
+//;#
+//;# Main template begins
 //;sum = 0
 //;for i in spec:
 //;    sum += i
-//;    print(i)
+//;### level++
+%(i)d
+//;### level--
 ----------
 Total: %(sum)d
 ----------
