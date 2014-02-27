@@ -40,36 +40,34 @@ def process_specs():
     return spec
 
 def parse_template():
-    res = ""
-    indent = "    "
-    level = 0
-    pat = re.compile(r'^//;|^#%')
-    i_pat = re.compile(r'^ *#{3} *level(?P<suffix>[-+]{2}) *$');
+    code = ""
+    indent = ""
+    t_pat = re.compile(r'^//;|^#%')
+    i_pat = re.compile(r'^(?P<indent> *)');
     begin_here_doc = 'print("""'
     end_here_doc = '""" % locals(), end="")\n'
     state = 0 # 0 = python; 1 = template txt
-    file_t = open(args.template, "r")
-    for line in file_t:
-        if (pat.match(line)):
-            line = pat.sub('', line) # string replace
+    t_file = open(args.template, "r")
+    for line in t_file:
+        if (t_pat.match(line)):
+            line = t_pat.sub('', line) # string replace
             m = i_pat.match(line)
             if m is not None:
-                if m.group('suffix') == '++':
-                    level += 1
-                else:
-                    level -= 1
+                indent = m.group('indent')
+            else:
+                indent = ""
             if state == 1:
                 line = end_here_doc + line # end here doc
             state = 0
         else:
             if state == 0:
-                line = level * indent + begin_here_doc + line
+                line = indent + begin_here_doc + line
                 state = 1
-        res += line
+        code += line
     if state == 1: # one final time
-        res += end_here_doc
-    file_t.close()
-    return(res)
+        code += end_here_doc
+    t_file.close()
+    return(code)
 
 if __name__ == "__main__":
     process_inputs()
