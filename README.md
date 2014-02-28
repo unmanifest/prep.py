@@ -12,6 +12,6 @@ See example template files under test/sum. Template rules are fairly simple.
   document' print statements.
 - By default, the indentation level of the print statement will match the
   indentation of the previous line (immediately preceding it).
-- A commented code line '//;<whitespace>#' can be used to update the
+- A commented code line '//;[whitespace]#' can be used to update the
   indentation level such that subsequent prints use the new indentation level
-  as determined by '<whitespace>' in the comment line format shown above.
+  as determined by '[whitespace]' in the comment line format shown above.
