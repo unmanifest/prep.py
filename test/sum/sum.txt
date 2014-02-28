@@ -2,5 +2,6 @@
 //;for i in spec:
 //;    sum += i
 //;    print(i)
+//;#
 --------
 //;print(sum)
